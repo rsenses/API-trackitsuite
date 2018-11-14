@@ -27,28 +27,35 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password',
+        'remember_token',
+        'api_token',
+        'email_verified_at',
+        'updated_at',
+        'is_admin',
+        'is_moderator',
+        'uuid'
     ];
 
     public function products()
     {
-        return $this->belongsToMany('Expomark\Entity\Product', 'product_user', 'user_id', 'product_id')
+        return $this->belongsToMany('App\Product', 'product_user', 'user_id', 'product_id')
             ->withPivot('product_user_id', 'room_id', 'date_start', 'date_end');
     }
 
     public function companies()
     {
-        return $this->belongsToMany('Expomark\Entity\Company', 'company_user', 'user_id', 'company_id')
+        return $this->belongsToMany('App\Company', 'company_user', 'user_id', 'company_id')
             ->withPivot('role');
     }
 
     public function logs()
     {
-        return $this->hasMany('Expomark\Entity\Log');
+        return $this->hasMany('App\Log');
     }
 
     public function verifications()
     {
-        return $this->hasMany('Expomark\Entity\Verification');
+        return $this->hasMany('App\Verification');
     }
 }

@@ -11,6 +11,32 @@ use App\Customer;
 class RegistrationController extends Controller
 {
     /**
+     * Display a listing of the resource.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function index(Request $request)
+    {
+        $product = Product::findOrFail($request->product_id);
+
+        $registrations = $product->registrations()
+            ->select('registration.*')
+            ->with('customer', 'customer.metas')
+            ->join('customer', 'registration.customer_id', '=', 'customer.customer_id')
+            ->where('registration.is_confirmed', 1)
+            ->registrationType($request->registration_type_id)
+            ->orderBy('customer.last_name', 'ASC')
+            ->get();
+
+        if (!$registrations) {
+            abort(404, __('messages.no_product'));
+        }
+
+        return $registrations;
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request

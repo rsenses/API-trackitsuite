@@ -18,9 +18,14 @@ Route::namespace('Api')->prefix('v2')->middleware('auth:api')->group(function ()
     //     return $request->user();
     // });
 
+    Route::get('registrations', 'RegistrationController@index');
     Route::post('registrations', 'RegistrationController@store');
     Route::get('registrations/{id}', 'RegistrationController@show');
     Route::delete('registrations/{id}', 'RegistrationController@destroy');
 
     Route::post('verifications', 'VerificationController@store');
+
+    Route::post('products', 'ProductController@store');
+
+    Route::get('users/{id}', 'UserController@show');
 });

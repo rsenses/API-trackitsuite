@@ -8,6 +8,7 @@ class Product extends Model
 {
     protected $table = 'product';
     protected $primaryKey = 'product_id';
+
     protected $dates = [
         'date_start',
         'date_end',
@@ -15,9 +16,15 @@ class Product extends Model
         'updated_at'
     ];
 
+    protected $hidden = [
+        'updated_at',
+        'company_id',
+        'place_id'
+    ];
+
     public function place()
     {
-        return $this->hasOne('App\Place');
+        return $this->hasOne('App\Place', 'place_id');
     }
 
     public function company()

@@ -28,6 +28,12 @@ class Registration extends Model
         'customer_id'
     ];
 
+    protected $hidden = [
+        'updated_at',
+        'customer_id',
+        'product_id',
+    ];
+
     /**
      * The attributes that should be cast to native types.
      *
@@ -61,6 +67,20 @@ class Registration extends Model
     public function verifications()
     {
         return $this->hasMany('App\Verification', 'registration_id');
+    }
+
+    /**
+     * Scope a query to filter for registration_type if exist
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param $id
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
+    public function scopeRegistrationType($query, $id)
+    {
+        if ($id) {
+            return $query->where('registration_type_id', $id);
+        }
     }
 
     /**

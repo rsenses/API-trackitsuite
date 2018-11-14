@@ -9,6 +9,11 @@ class CustomerMeta extends Model
     protected $table = 'customer_meta';
     protected $primaryKey = 'customer_meta_id';
 
+    protected $hidden = [
+        'updated_at',
+        'customer_id',
+    ];
+
     /**
      * The attributes that are mass assignable.
      *

@@ -16,6 +16,10 @@ class Customer extends Model
         'email'
     ];
 
+    protected $hidden = [
+        'updated_at',
+    ];
+
     public function products()
     {
         return $this->belongsToMany('App\Product', 'registration')
