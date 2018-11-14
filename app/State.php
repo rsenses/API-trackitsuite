@@ -16,6 +16,6 @@ class State extends Model
 
     public function place()
     {
-        return $this->belongsTo('App\Place');
+        return $this->belongsTo('App\Place', 'state_id');
     }
 }
