@@ -1,6 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,10 +13,6 @@ use Illuminate\Http\Request;
  */
 
 Route::namespace('Api')->prefix('v2')->middleware('auth:api')->group(function () {
-    // Route::get('user', function (Request $request) {
-    //     return $request->user();
-    // });
-
     Route::get('registrations', 'RegistrationController@index');
     Route::post('registrations', 'RegistrationController@store');
     Route::get('registrations/{id}', 'RegistrationController@show');

@@ -277,9 +277,7 @@ class Registration extends Model
         $verification = $this->verifications()->latest()->first();
 
         if ($verification) {
-            if ($verification->created_at > Carbon::now()->subSeconds(60)) {
-                throw new VerifiedException(__('messages.verified'));
-            }
+            $this->guardAgainstAlreadyVerifiedRegistration($verification);
         } else {
             $this->sendVerifyRequest();
 
@@ -291,6 +289,19 @@ class Registration extends Model
         }
 
         return $verification;
+    }
+
+    /**
+     * Check if the registration has benn verified recently, we gave it a 60 seconds margin in case of accidental double validation
+     *
+     * @param  App\Verification  $verification
+     * @return mixed
+     */
+    public function guardAgainstAlreadyVerifiedRegistration(Verification $verification)
+    {
+        if ($verification->created_at < Carbon::now()->subSeconds(60)) {
+            throw new VerifiedException(__('messages.verified'));
+        }
     }
 
     /**
