@@ -22,4 +22,10 @@ return [
     'inscription_removed' => 'Inscription removed',
     'not_authorized' => 'The user is not authorized to make the request',
 
+    'subject' => [
+        'registrations' => [
+            'created' => 'Registration to :product'
+        ]
+    ]
+
 ];

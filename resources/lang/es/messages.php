@@ -22,4 +22,10 @@ return [
     'inscription_removed' => 'Inscripción eliminada',
     'not_authorized' => 'Usuario no autorizado para realizar la petición',
 
+
+    'subject' => [
+        'registrations' => [
+            'created' => 'Inscripción a :product'
+        ]
+    ]
 ];

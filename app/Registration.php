@@ -17,6 +17,8 @@ use App\Exceptions\UnauthorizedException;
 use App\Exceptions\FullCapacityException;
 use App\Exceptions\NotFoundException;
 use App\Exceptions\VerifiedException;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\RegistrationCreated;
 
 class Registration extends Model
 {
@@ -127,6 +129,8 @@ class Registration extends Model
 
         $registration->sendCreateRequest($request);
 
+        $registration->sendCreatedEmail();
+
         return $registration;
     }
 
@@ -150,6 +154,18 @@ class Registration extends Model
             return $registration;
         } catch (\Throwable $th) {
             throw new NotFoundException(__('messages.not_found'));
+        }
+    }
+
+    /**
+     * Send a registration created email if necesary
+     *
+     * @return void
+     */
+    public function sendCreatedEmail()
+    {
+        if (!$this->is_authorized) {
+            Mail::to($this->customer->email)->send(new RegistrationCreated($this));
         }
     }
 
