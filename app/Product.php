@@ -27,9 +27,17 @@ class Product extends Model
         return $this->hasOne('App\Place', 'place_id');
     }
 
+    /**
+     * Get the template that owns the product.
+     */
+    public function template()
+    {
+        return $this->belongsTo('App\Template', 'template_id');
+    }
+
     public function company()
     {
-        return $this->hasOne('App\Company');
+        return $this->belongsTo('App\Company', 'company_id');
     }
 
     public function users()

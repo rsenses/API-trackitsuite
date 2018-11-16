@@ -24,7 +24,8 @@ return [
 
     'subject' => [
         'registrations' => [
-            'created' => 'Registration to :product'
+            'created' => 'Registration to :product',
+            'authorized' => 'Your ticket to :product',
         ]
     ]
 

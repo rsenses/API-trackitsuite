@@ -165,7 +165,7 @@ class Registration extends Model
     public function sendCreatedEmail()
     {
         if (!$this->is_authorized) {
-            Mail::to($this->customer->email)->send(new RegistrationCreated($this));
+            Mail::to($this->customer->email)->queue(new RegistrationCreated($this));
         }
     }
 

@@ -14,4 +14,12 @@ class Company extends Model
         return $this->belongsToMany('App\User', 'company_user', 'company_id', 'user_id')
             ->withPivot('role');
     }
+
+    /**
+     * Get the product that owns the company.
+     */
+    public function product()
+    {
+        return $this->hasOne('App\Product', 'template_id');
+    }
 }

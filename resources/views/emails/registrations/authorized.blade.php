@@ -1,0 +1,1 @@
+{!! $registration->product->template->parse($data) !!}
