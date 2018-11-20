@@ -22,6 +22,7 @@ Route::namespace('Api')->prefix('v2')->middleware('auth:api')->group(function ()
 
     Route::post('verifications', 'VerificationController@store');
 
+    Route::get('products', 'ProductController@index');
     Route::post('products', 'ProductController@store');
 
     Route::get('users/{id}', 'UserController@show');

@@ -57,8 +57,6 @@ class RegistrationController extends Controller
 
         $product = Product::findOrFail($request->product_id);
 
-        $user = $request->user();
-
         $customer = Customer::createOrUpdate($request);
 
         $registration = Registration::createOrUpdate($request, $product, $customer);

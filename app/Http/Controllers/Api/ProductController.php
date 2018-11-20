@@ -6,9 +6,32 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Place;
 use App\Product;
+use Carbon\Carbon;
 
 class ProductController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function index(Request $request)
+    {
+        $product = Product::with('rooms')
+            ->whereHas('users', function ($query) use ($request) {
+                $now = Carbon::now();
+
+                $query->where('product_user.date_start', '<', $now)
+                    ->where('product_user.date_end', '>', $now)
+                    ->where('product_user.user_id', $request->user()->user_id);
+            })
+            ->orderBy('date_start')
+            ->get();
+
+        return $products;
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -23,7 +46,7 @@ class ProductController extends Controller
             'date_start' => 'required|date|after:today',
             'date_end' => 'required|date|after:date_start',
             'capacity' => 'required|integer',
-            'company_id' => 'required|exists:company,company_id',
+            'company_id' => 'required|exists:company,company_id|company',
             'place_name' => 'nullable|max:255',
             'place_address' => 'required_with:place_name',
             'place_city' => 'required_with:place_name',
