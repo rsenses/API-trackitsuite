@@ -127,7 +127,7 @@ class Registration extends Model
 
         $registration->verifyRegistration($request);
 
-        $registration->sendCreateRequest($request);
+        // $registration->sendCreateRequest($request);
 
         $registration->sendCreatedEmail();
 
