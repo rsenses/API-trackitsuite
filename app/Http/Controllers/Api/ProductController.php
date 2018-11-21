@@ -18,7 +18,7 @@ class ProductController extends Controller
      */
     public function index(Request $request)
     {
-        $product = Product::with('rooms')
+        $products = Product::with('rooms')
             ->whereHas('users', function ($query) use ($request) {
                 $now = Carbon::now();
 
@@ -70,6 +70,6 @@ class ProductController extends Controller
 
         $product->save();
 
-        return $product->with('place')->first();
+        return Product::with('place')->findOrFail($product->product_id);
     }
 }
