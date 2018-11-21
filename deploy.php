@@ -45,4 +45,4 @@ task('artisan:storage:link', function () {
 after('deploy:symlink', 'artisan:storage:link');
 
 // Migrate database before symlink new release.
-before('deploy:symlink', 'artisan:migrate');
+// before('deploy:symlink', 'artisan:migrate');
