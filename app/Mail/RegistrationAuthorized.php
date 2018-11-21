@@ -26,6 +26,7 @@ class RegistrationAuthorized extends Mailable implements ShouldQueue
 
         $this->data = [
             'registration_unique_id' => $registration->unique_id,
+            'registration_qr' => "https://trackitsuite.com/es/registration/qr/{$registration->unique_id}",
             'registration_metadata' => $registration->metadata,
             'registration_type' => $registration->type->name,
             'customer_first_name' => $registration->customer->first_name,
