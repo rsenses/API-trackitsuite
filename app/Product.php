@@ -59,7 +59,7 @@ class Product extends Model
 
     public function rooms()
     {
-        return $this->hasMany('App\Room');
+        return $this->hasMany('App\Room', 'room_id');
     }
 
     public function logs()
