@@ -12,9 +12,9 @@ class ModifyUserTableApiToken extends Migration
      */
     public function up()
     {
-        // Schema::table('user', function ($table) {
-        //     $table->string('api_token', 60)->unique()->change();
-        // });
+        Schema::table('user', function ($table) {
+            $table->string('api_token', 60)->unique()->change();
+        });
     }
 
     /**
