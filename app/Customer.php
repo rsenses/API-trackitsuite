@@ -36,9 +36,9 @@ class Customer extends Model
         return $this->hasMany('App\CustomerMeta', 'customer_id');
     }
 
-    public function fullName()
+    public function getFullNameAttribute()
     {
-        return $this->first_name . ' ' . $this->last_name;
+        return "{$this->first_name} {$this->last_name}";
     }
 
     /**
