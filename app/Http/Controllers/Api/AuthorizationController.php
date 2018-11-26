@@ -5,8 +5,7 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Registration;
-use Illuminate\Support\Facades\Mail;
-use App\Mail\RegistrationAuthorized;
+use App\Events\RegistrationAuthorized;
 
 class AuthorizationController extends Controller
 {
@@ -31,9 +30,7 @@ class AuthorizationController extends Controller
 
         $registration->save();
 
-        if ($registration->is_authorized && $registration->product->templates()->where('event', 'registration.created')->exists()) {
-            Mail::to($registration->customer->email)->queue(new RegistrationAuthorized($registration));
-        }
+        event(new RegistrationAuthorized($registration));
 
         return $registration;
     }

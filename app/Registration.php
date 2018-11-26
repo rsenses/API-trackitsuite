@@ -6,19 +6,14 @@
 
 namespace App;
 
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
-use GuzzleHttp\Client;
-use GuzzleHttp\Exception\RequestException;
-use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 use App\Exceptions\UnauthorizedException;
 use App\Exceptions\FullCapacityException;
 use App\Exceptions\NotFoundException;
 use App\Exceptions\VerifiedException;
-use Illuminate\Support\Facades\Mail;
-use App\Mail\RegistrationCreated;
+use App\Events\RegistrationCreated;
 
 class Registration extends Model
 {
@@ -127,9 +122,7 @@ class Registration extends Model
 
         $registration->verifyRegistration($request);
 
-        // $registration->sendCreateRequest($request);
-
-        $registration->sendCreatedEmail();
+        event(new RegistrationCreated($request, $registration));
 
         return $registration;
     }
@@ -154,89 +147,6 @@ class Registration extends Model
             return $registration;
         } catch (\Throwable $th) {
             throw new NotFoundException(__('messages.not_found'));
-        }
-    }
-
-    /**
-     * Send a registration created email if necesary
-     *
-     * @return void
-     */
-    public function sendCreatedEmail()
-    {
-        if (!$this->is_authorized) {
-            Mail::to($this->customer->email)->queue(new RegistrationCreated($this));
-        }
-    }
-
-    /**
-     * Send the new registration to external source
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return mixed
-     */
-    public function sendCreateRequest(Request $request)
-    {
-        $params = [
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
-            'email' => $request->email,
-            'registration_type' => $this->type->name,
-            'unique_id' => $this->unique_id,
-            'attended' => $this->verification,
-        ];
-
-        $noSendData = ['_token', 'email', 'first_name', 'last_name', 'registration_type_id', 'verification'];
-
-        foreach ($request->except($noSendData) as $key => $value) {
-            $params[$key] = $value;
-        }
-
-        $this->sendPostRequest('https://smart.conferenciasyformacion.com/trackit/', 'create', $params);
-    }
-
-    /**
-     * Send verification to external source
-     *
-     * @return mixed
-     */
-    public function sendVerifyRequest()
-    {
-        $params = [
-            'unique_id' => $this->unique_id,
-        ];
-
-        $this->sendPostRequest('https://smart.conferenciasyformacion.com/trackit/', 'attended', $params);
-    }
-
-    /**
-     * Send POST request to external source
-     *
-     * @param  $baseUri
-     * @param  $path
-     * @param  array $params
-     * @return mixed
-     */
-    public function sendPostRequest($baseUri, $path, array $params)
-    {
-        $client = new Client([
-            'base_uri' => $baseUri
-        ]);
-
-        try {
-            $response = $client->post($path, [
-                'form_params' => $params
-            ]);
-
-            return true;
-        } catch (RequestException $e) {
-            Log::notice($e->getMessage());
-
-            return false;
-        } catch (Exception $e) {
-            Log::error($e->getMessage());
-
-            return false;
         }
     }
 
