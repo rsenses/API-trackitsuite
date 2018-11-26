@@ -61,6 +61,8 @@ class RegistrationController extends Controller
 
         $registration = Registration::createOrUpdate($request, $product, $customer);
 
+        $registration->transition('create');
+
         return $registration;
     }
 

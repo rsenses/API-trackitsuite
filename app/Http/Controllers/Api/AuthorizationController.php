@@ -26,9 +26,9 @@ class AuthorizationController extends Controller
 
         $registration->is_authorized = $request->is_authorized;
 
-        $template = $registration->product->template;
-
         $registration->save();
+
+        $registration->transition('approve');
 
         event(new RegistrationAuthorized($registration));
 

@@ -14,9 +14,18 @@ use App\Exceptions\FullCapacityException;
 use App\Exceptions\NotFoundException;
 use App\Exceptions\VerifiedException;
 use App\Events\RegistrationCreated;
+use App\Traits\Statable;
 
 class Registration extends Model
 {
+    use Statable;
+
+    const HISTORY_MODEL = [
+        'name' => 'App\RegistrationState', // the related model to store the history
+        'foreign_key' => 'registration_id' // the foreign key to relation
+    ];
+    const SM_CONFIG = 'registration'; // the SM graph to use
+
     protected $table = 'registration';
     protected $primaryKey = 'registration_id';
 
@@ -117,6 +126,7 @@ class Registration extends Model
         }
 
         $registration->save();
+        $registration->fresh();
 
         $registration->saveRoomAccess($roomId);
 
@@ -124,7 +134,7 @@ class Registration extends Model
 
         event(new RegistrationCreated($request, $registration));
 
-        return $registration;
+        return $registration->fresh();
     }
 
     /**
@@ -180,6 +190,8 @@ class Registration extends Model
     public function verifyRegistration(Request $request)
     {
         if ($request->verification) {
+            $this->transition('accepted');
+
             $verification = Verification::create([
                 'registration_id' => $this->registration_id,
                 'user_id' => $request->user()->user_id,
