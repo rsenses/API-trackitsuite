@@ -31,7 +31,7 @@ class AuthorizationController extends Controller
 
         $registration->save();
 
-        if ($registration->is_authorized && $registration->product->template) {
+        if ($registration->is_authorized && $registration->product->templates()->where('event', 'registration.created')->exists()) {
             Mail::to($registration->customer->email)->queue(new RegistrationAuthorized($registration));
         }
 

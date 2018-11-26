@@ -10,15 +10,11 @@ use App\Registration;
 
 class RegistrationCreated extends Mailable implements ShouldQueue
 {
-    use Queueable, SerializesModels;
+    use Queueable, SerializesModels, DataModel;
 
-    /**
-     * The registration instance.
-     *
-     * @var Registration
-     */
+    public $data;
     public $registration;
-
+    public $template;
 
     /**
      * Create a new message instance.
@@ -28,6 +24,13 @@ class RegistrationCreated extends Mailable implements ShouldQueue
     public function __construct(Registration $registration)
     {
         $this->registration = $registration;
+
+        $this->data = $this->getRegistrationData($registration);
+
+        $this->template = $this->registration->product
+            ->templates()
+            ->where('event', 'registration.created')
+            ->firstOrFail();
     }
 
     /**
@@ -38,6 +41,6 @@ class RegistrationCreated extends Mailable implements ShouldQueue
     public function build()
     {
         return $this->subject(__('messages.subject.registrations.created', ['product' => $this->registration->product->name]))
-            ->view('emails.registrations.created');
+            ->view('emails.registrations.template');
     }
 }

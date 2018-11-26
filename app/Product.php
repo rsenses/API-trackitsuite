@@ -30,9 +30,9 @@ class Product extends Model
     /**
      * Get the template that owns the product.
      */
-    public function template()
+    public function templates()
     {
-        return $this->belongsTo('App\Template', 'template_id');
+        return $this->hasMany('App\Template', 'product_id');
     }
 
     public function company()

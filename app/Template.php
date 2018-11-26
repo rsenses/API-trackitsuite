@@ -19,7 +19,7 @@ class Template extends Model
      */
     public function product()
     {
-        return $this->hasOne('App\Product', 'template_id');
+        return $this->belongsTo('App\Product', 'product_id');
     }
 
     /**
