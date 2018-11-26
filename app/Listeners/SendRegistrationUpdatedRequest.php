@@ -2,9 +2,9 @@
 
 namespace App\Listeners;
 
-use App\Events\RegistrationAuthorized;
+use App\Events\RegistrationUpdated;
 
-class SendRegistrationAuthorizedRequest
+class SendRegistrationUpdatedRequest
 {
     use GuzzleRequest;
 
@@ -21,10 +21,10 @@ class SendRegistrationAuthorizedRequest
     /**
      * Handle the event.
      *
-     * @param  RegistrationAuthorized  $event
+     * @param  RegistrationUpdated  $event
      * @return void
      */
-    public function handle(RegistrationAuthorized $event)
+    public function handle(RegistrationUpdated $event)
     {
         $params = [
             'unique_id' => $event->registration->unique_id,

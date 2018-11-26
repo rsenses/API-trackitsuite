@@ -8,7 +8,7 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use App\Registration;
 
-class RegistrationAuthorized
+class RegistrationUpdated
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 

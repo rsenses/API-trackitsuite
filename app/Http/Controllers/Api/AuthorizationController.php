@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Registration;
-use App\Events\RegistrationAuthorized;
+use App\Events\RegistrationUpdated;
 use Illuminate\Support\Facades\Log;
 
 class AuthorizationController extends Controller
@@ -25,17 +25,13 @@ class AuthorizationController extends Controller
 
         $registration = Registration::findOrFail($id);
 
-        // $registration->is_authorized = $request->state;
-
-        // $registration->save();
-
         try {
             $registration->transition($request->transition);
         } catch (\Throwable $th) {
             Log::notice($th->getMessage());
         }
 
-        event(new RegistrationAuthorized($registration));
+        event(new RegistrationUpdated($registration));
 
         return $registration;
     }

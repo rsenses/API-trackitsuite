@@ -23,9 +23,9 @@ class EventServiceProvider extends ServiceProvider
             'App\Listeners\SendRegistrationCreatedNotification',
             'App\Listeners\SendRegistrationCreatedRequest',
         ],
-        'App\Events\RegistrationAuthorized' => [
-            'App\Listeners\SendRegistrationAuthorizedNotification',
-            'App\Listeners\SendRegistrationAuthorizedRequest',
+        'App\Events\RegistrationUpdated' => [
+            'App\Listeners\SendRegistrationUpdatedNotification',
+            'App\Listeners\SendRegistrationUpdatedRequest',
         ],
         SMEvents::POST_TRANSITION => [
             'App\Listeners\StateHistoryManager@postTransition',

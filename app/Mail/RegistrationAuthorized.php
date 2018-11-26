@@ -29,7 +29,7 @@ class RegistrationAuthorized extends Mailable implements ShouldQueue
 
         $this->template = $this->registration->product
             ->templates()
-            ->where('event', 'registration.authorized')
+            ->where('state', 'accepted')
             ->firstOrFail();
     }
 

@@ -29,7 +29,7 @@ class RegistrationCreated extends Mailable implements ShouldQueue
 
         $this->template = $this->registration->product
             ->templates()
-            ->where('event', 'registration.created')
+            ->where('state', 'pending')
             ->firstOrFail();
     }
 

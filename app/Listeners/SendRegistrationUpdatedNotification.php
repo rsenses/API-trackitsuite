@@ -2,11 +2,11 @@
 
 namespace App\Listeners;
 
-use App\Events\RegistrationAuthorized;
+use App\Events\RegistrationUpdated;
 use App\Mail\RegistrationAuthorized as Maillable;
 use Illuminate\Support\Facades\Mail;
 
-class SendRegistrationAuthorizedNotification
+class SendRegistrationUpdatedNotification
 {
     /**
      * Create the event listener.
@@ -21,14 +21,14 @@ class SendRegistrationAuthorizedNotification
     /**
      * Handle the event.
      *
-     * @param  RegistrationAuthorized  $event
+     * @param  RegistrationUpdated  $event
      * @return void
      */
-    public function handle(RegistrationAuthorized $event)
+    public function handle(RegistrationUpdated $event)
     {
         $registration = $event->registration;
 
-        if ($registration->is_authorized && $registration->product->templates()->where('event', 'registration.authorized')->exists()) {
+        if ($registration->is_authorized && $registration->product->templates()->where('state', $registration->state)->exists()) {
             Mail::to($registration->customer->email)->queue(new Maillable($registration));
         }
     }

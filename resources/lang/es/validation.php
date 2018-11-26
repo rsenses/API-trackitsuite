@@ -130,6 +130,9 @@ return [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
+        'transition' => [
+            'in' => 'El campo :attribute no es válido, usa reject, approve o cancel.'
+        ],
     ],
 
     /*
