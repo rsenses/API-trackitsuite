@@ -16,6 +16,7 @@ return [
             'new',
             'pending',
             'accepted',
+            'verified',
             'rejected',
             'cancelled',
         ],
@@ -30,12 +31,16 @@ return [
                 'from' => ['pending', 'rejected', 'cancelled'],
                 'to' => 'accepted',
             ],
-            'rejected' => [
+            'verify' => [
+                'from' => ['accepted'],
+                'to' => 'verified',
+            ],
+            'reject' => [
                 'from' => ['pending'],
                 'to' => 'rejected',
             ],
             'cancel' => [
-                'from' => ['accepted', 'pending', 'rejected', 'new'],
+                'from' => ['accepted', 'pending', 'rejected', 'new', 'verified'],
                 'to' => 'cancelled',
             ],
         ],

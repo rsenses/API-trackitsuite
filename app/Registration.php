@@ -15,6 +15,7 @@ use App\Exceptions\NotFoundException;
 use App\Exceptions\VerifiedException;
 use App\Events\RegistrationCreated;
 use App\Traits\Statable;
+use Illuminate\Support\Facades\Log;
 
 class Registration extends Model
 {
@@ -190,7 +191,11 @@ class Registration extends Model
     public function verifyRegistration(Request $request)
     {
         if ($request->verification) {
-            $this->transition('accepted');
+            try {
+                $this->transition('verify');
+            } catch (\Throwable $th) {
+                Log::notice($th->getMessage());
+            }
 
             $verification = Verification::create([
                 'registration_id' => $this->registration_id,

@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Registration;
 use App\Product;
 use App\Customer;
+use Illuminate\Support\Facades\Log;
 
 class RegistrationController extends Controller
 {
@@ -61,7 +62,11 @@ class RegistrationController extends Controller
 
         $registration = Registration::createOrUpdate($request, $product, $customer);
 
-        $registration->transition('create');
+        try {
+            $registration->transition('create');
+        } catch (\Throwable $th) {
+            Log::notice($th->getMessage());
+        }
 
         return $registration;
     }

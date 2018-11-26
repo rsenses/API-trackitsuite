@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Registration;
 use App\Events\RegistrationAuthorized;
+use Illuminate\Support\Facades\Log;
 
 class AuthorizationController extends Controller
 {
@@ -19,16 +20,20 @@ class AuthorizationController extends Controller
     public function update(Request $request, $id)
     {
         $validatedData = $request->validate([
-            'is_authorized' => 'required|boolean',
+            'transition' => 'required|in:approve,reject,cancel',
         ]);
 
         $registration = Registration::findOrFail($id);
 
-        $registration->is_authorized = $request->is_authorized;
+        // $registration->is_authorized = $request->state;
 
-        $registration->save();
+        // $registration->save();
 
-        $registration->transition('approve');
+        try {
+            $registration->transition($request->transition);
+        } catch (\Throwable $th) {
+            Log::notice($th->getMessage());
+        }
 
         event(new RegistrationAuthorized($registration));
 
