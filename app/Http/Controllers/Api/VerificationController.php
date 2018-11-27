@@ -20,9 +20,7 @@ class VerificationController extends Controller
             'unique_id' => 'required|exists:registration,unique_id',
         ]);
 
-        $registration = Registration::lookForRegistration($request);
-
-        // $registration->guardAgainstNotAuthorizedAccess($request);
+        $registration = Registration::getRegistrationByUniqueID($request);
 
         $registration->verify($request);
 

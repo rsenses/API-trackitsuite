@@ -19,16 +19,10 @@ class EventServiceProvider extends ServiceProvider
         Registered::class => [
             SendEmailVerificationNotification::class,
         ],
-        'App\Events\RegistrationCreated' => [
-            'App\Listeners\SendRegistrationCreatedNotification',
-            'App\Listeners\SendRegistrationCreatedRequest',
-        ],
-        'App\Events\RegistrationUpdated' => [
-            'App\Listeners\SendRegistrationUpdatedNotification',
-            'App\Listeners\SendRegistrationUpdatedRequest',
-        ],
         SMEvents::POST_TRANSITION => [
             'App\Listeners\StateHistoryManager@postTransition',
+            'App\Listeners\SendRegistrationUpdatedNotification',
+            'App\Listeners\SendRegistrationUpdatedRequest',
         ],
     ];
 

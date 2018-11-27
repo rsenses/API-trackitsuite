@@ -24,8 +24,8 @@ return [
 
     'subject' => [
         'registrations' => [
-            'created' => 'Registration to :product',
-            'authorized' => 'Your ticket to :product',
+            'pending' => 'Registration to :product',
+            'accepted' => 'Your ticket to :product',
         ]
     ]
 

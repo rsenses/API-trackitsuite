@@ -2,9 +2,9 @@
 
 namespace App\Listeners;
 
-use App\Events\RegistrationUpdated;
-use App\Mail\RegistrationAuthorized as Maillable;
+use App\Mail\RegistrationUpdated;
 use Illuminate\Support\Facades\Mail;
+use SM\Event\TransitionEvent;
 
 class SendRegistrationUpdatedNotification
 {
@@ -21,15 +21,16 @@ class SendRegistrationUpdatedNotification
     /**
      * Handle the event.
      *
-     * @param  RegistrationUpdated  $event
+     * @param  TransitionEvent  $event
      * @return void
      */
-    public function handle(RegistrationUpdated $event)
+    public function handle(TransitionEvent $event)
     {
-        $registration = $event->registration;
+        $state = $event->getStateMachine()->getState();
+        $registration = $event->getStateMachine()->getObject();
 
-        if ($registration->is_authorized && $registration->product->templates()->where('state', $registration->state)->exists()) {
-            Mail::to($registration->customer->email)->queue(new Maillable($registration));
+        if ($registration->product->templates()->where('state', $state)->exists()) {
+            Mail::to($registration->customer->email)->queue(new RegistrationUpdated($registration));
         }
     }
 }

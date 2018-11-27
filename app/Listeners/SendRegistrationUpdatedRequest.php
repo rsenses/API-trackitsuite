@@ -2,7 +2,7 @@
 
 namespace App\Listeners;
 
-use App\Events\RegistrationUpdated;
+use SM\Event\TransitionEvent;
 
 class SendRegistrationUpdatedRequest
 {
@@ -21,13 +21,15 @@ class SendRegistrationUpdatedRequest
     /**
      * Handle the event.
      *
-     * @param  RegistrationUpdated  $event
+     * @param  TransitionEvent  $event
      * @return void
      */
-    public function handle(RegistrationUpdated $event)
+    public function handle(TransitionEvent $event)
     {
+        $registration = $event->getStateMachine()->getObject();
+
         $params = [
-            'unique_id' => $event->registration->unique_id,
+            'unique_id' => $registration->unique_id,
         ];
 
         // $this->sendPostRequest('https://smart.conferenciasyformacion.com/trackit/', 'attended', $params);

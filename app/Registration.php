@@ -1,6 +1,8 @@
 <?php
 
 /**
+ * TODO: Request tras cada transition de StateMachine (POST_TRANSITION) en vez de manualmente como Update
+ * TODO: Repasar y quitar todos los is_authorized e is_cancelled
  * TODO: Configurar external Request para cada Company
  */
 
@@ -14,6 +16,7 @@ use App\Exceptions\FullCapacityException;
 use App\Exceptions\NotFoundException;
 use App\Exceptions\VerifiedException;
 use App\Events\RegistrationCreated;
+use App\Events\RegistrationUpdated;
 use App\Traits\Statable;
 use Illuminate\Support\Facades\Log;
 
@@ -114,8 +117,8 @@ class Registration extends Model
         );
 
         $registration->registration_type_id = $request->registration_type_id;
-        $registration->is_authorized = $request->authorized ?: 0;
-        $registration->is_cancelled = 0;
+        // $registration->is_authorized = $request->authorized ?: 0;
+        // $registration->is_cancelled = 0;
 
         if (!$registration->exists) {
             $last = $product->registrations()->latest()->first()->metadata['orden'] ?? 0;
@@ -139,16 +142,19 @@ class Registration extends Model
     }
 
     /**
-     * Create a registration
+     * Get Registration by Unique ID
      *
      * @param  \Illuminate\Http\Request  $request
      * @return mixed
      */
-    public static function lookForRegistration(Request $request)
+    public static function getRegistrationByUniqueID(Request $request)
     {
         try {
             $registration = Registration::with(['customer', 'type'])
-                ->where('is_authorized', 1)
+                ->where(function ($q) {
+                    $q->where('state', 'accepted');
+                    $q->orWhere('state', 'verified');
+                })
                 ->where('unique_id', $request->unique_id)
                 ->whereHas('product.users', function ($query) use ($request) {
                     $query->where('user.user_id', $request->user()->user_id);
@@ -222,7 +228,15 @@ class Registration extends Model
         if ($verification) {
             $this->guardAgainstAlreadyVerifiedRegistration($verification);
         } else {
-            $this->sendVerifyRequest();
+            // $this->guardAgainstNotAuthorizedAccess($request);
+
+            try {
+                $this->transition('verify');
+            } catch (\Throwable $th) {
+                Log::notice($th->getMessage());
+            }
+
+            event(new RegistrationUpdated($this));
 
             $verification = Verification::create([
                 'registration_id' => $this->registration_id,
