@@ -1,7 +1,6 @@
 <?php
 
 /**
- * TODO: Request tras cada transition de StateMachine (POST_TRANSITION) en vez de manualmente como Update
  * TODO: Repasar y quitar todos los is_authorized e is_cancelled
  * TODO: Configurar external Request para cada Company
  */
