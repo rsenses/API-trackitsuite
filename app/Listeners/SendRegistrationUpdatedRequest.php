@@ -3,6 +3,7 @@
 namespace App\Listeners;
 
 use SM\Event\TransitionEvent;
+use App\Traits\GuzzleRequest;
 
 class SendRegistrationUpdatedRequest
 {

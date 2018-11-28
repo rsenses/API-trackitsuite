@@ -7,11 +7,12 @@ use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Registration;
-use Illuminate\Support\Facades\Log;
+use App\Traits\AllowedTemplateData;
+use Illuminate\Support\Facades\Config;
 
 class RegistrationUpdated extends Mailable implements ShouldQueue
 {
-    use Queueable, SerializesModels, DataModel;
+    use Queueable, SerializesModels, AllowedTemplateData;
 
     public $data;
     public $registration;
@@ -32,8 +33,6 @@ class RegistrationUpdated extends Mailable implements ShouldQueue
             ->templates()
             ->where('state', $registration->state)
             ->firstOrFail();
-
-        Log::info($this->template);
     }
 
     /**
@@ -43,7 +42,11 @@ class RegistrationUpdated extends Mailable implements ShouldQueue
      */
     public function build()
     {
+        $fromEmail = $this->registration->product->company->from_email ?: Config::get('mail.from.address');
+        $fromName = $this->registration->product->company->from_name ?: Config::get('mail.from.name');
+
         return $this->subject(__('messages.subject.registrations.' . $this->registration->state, ['product' => $this->registration->product->name]))
+            ->from($fromEmail, $fromName)
             ->view('emails.registrations.template');
     }
 }

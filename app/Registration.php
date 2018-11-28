@@ -14,7 +14,6 @@ use App\Exceptions\UnauthorizedException;
 use App\Exceptions\FullCapacityException;
 use App\Exceptions\NotFoundException;
 use App\Exceptions\VerifiedException;
-use App\Events\RegistrationUpdated;
 use App\Traits\Statable;
 use Illuminate\Support\Facades\Log;
 
@@ -231,8 +230,6 @@ class Registration extends Model
             } catch (\Throwable $th) {
                 Log::notice($th->getMessage());
             }
-
-            event(new RegistrationUpdated($this));
 
             $verification = Verification::create([
                 'registration_id' => $this->registration_id,

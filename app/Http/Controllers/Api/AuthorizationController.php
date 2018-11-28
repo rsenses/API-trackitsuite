@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Registration;
-use App\Events\RegistrationUpdated;
 use Illuminate\Support\Facades\Log;
 
 class AuthorizationController extends Controller
@@ -30,8 +29,6 @@ class AuthorizationController extends Controller
         } catch (\Throwable $th) {
             Log::notice($th->getMessage());
         }
-
-        event(new RegistrationUpdated($registration));
 
         return $registration;
     }

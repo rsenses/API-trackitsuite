@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Mail;
+namespace App\Traits;
 
 use App\Registration;
 
-trait DataModel
+trait AllowedTemplateData
 {
     /**
      * Get the property value for the given property.
