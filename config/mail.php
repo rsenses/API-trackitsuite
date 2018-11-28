@@ -57,7 +57,7 @@ return [
 
     'from' => [
         'address' => env('MAIL_FROM_ADDRESS', 'noreply@trackitsuite.com'),
-        'name' => env('MAIL_FROM_NAME', 'Trackit'),
+        'name' => env('MAIL_FROM_NAME', 'Ciclo Foro Inserta'),
     ],
 
     /*
