@@ -14,7 +14,6 @@ use App\Exceptions\UnauthorizedException;
 use App\Exceptions\FullCapacityException;
 use App\Exceptions\NotFoundException;
 use App\Exceptions\VerifiedException;
-use App\Events\RegistrationCreated;
 use App\Events\RegistrationUpdated;
 use App\Traits\Statable;
 use Illuminate\Support\Facades\Log;
@@ -134,8 +133,6 @@ class Registration extends Model
         $registration->saveRoomAccess($roomId);
 
         $registration->verifyRegistration($request);
-
-        event(new RegistrationCreated($request, $registration));
 
         return $registration->fresh();
     }
