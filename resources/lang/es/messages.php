@@ -26,6 +26,7 @@ return [
         'registrations' => [
             'pending' => 'Inscripción a :product',
             'accepted' => 'Tu entrada a :product',
+            'rejected' => 'Aforo completo en :product',
         ]
     ]
 ];

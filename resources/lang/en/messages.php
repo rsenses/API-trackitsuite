@@ -26,6 +26,7 @@ return [
         'registrations' => [
             'pending' => 'Registration to :product',
             'accepted' => 'Your ticket to :product',
+            'rejected' => 'Full capacity of :product',
         ]
     ]
 
