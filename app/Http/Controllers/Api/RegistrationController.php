@@ -92,9 +92,11 @@ class RegistrationController extends Controller
     {
         $registration = Registration::findOrFail($id);
 
-        $registration->is_cancelled = 1;
-
-        $registration->save();
+        try {
+            $registration->transition('cancel');
+        } catch (\Throwable $th) {
+            Log::notice($th->getMessage());
+        }
 
         return $registration;
     }

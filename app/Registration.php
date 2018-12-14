@@ -1,10 +1,5 @@
 <?php
 
-/**
- * TODO: Repasar y quitar todos los is_authorized e is_cancelled
- * TODO: Configurar external Request para cada Company
- */
-
 namespace App;
 
 use Illuminate\Http\Request;
@@ -114,8 +109,6 @@ class Registration extends Model
         );
 
         $registration->registration_type_id = $request->registration_type_id;
-        // $registration->is_authorized = $request->authorized ?: 0;
-        // $registration->is_cancelled = 0;
 
         if (!$registration->exists) {
             $last = $product->registrations()->latest()->first()->metadata['orden'] ?? 0;

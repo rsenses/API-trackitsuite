@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * TODO: Cambiar registration_type_id a registration_type como string
+ * TODO: Configurar external Request para cada Company
+ */
 
 /*
 |--------------------------------------------------------------------------

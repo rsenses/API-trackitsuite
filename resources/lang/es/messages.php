@@ -28,5 +28,15 @@ return [
             'accepted' => 'Tu entrada a :product',
             'rejected' => 'Aforo completo en :product',
         ]
+    ],
+    'registration' => [
+        'type' => [
+            'attendee' => 'asistente',
+            'guest' => 'invitado',
+            'speaker' => 'speaker',
+            'vip' => 'vip',
+            'press' => 'prensa',
+            'staff' => 'staff',
+        ]
     ]
 ];

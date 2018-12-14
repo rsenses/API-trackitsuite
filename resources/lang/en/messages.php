@@ -28,6 +28,16 @@ return [
             'accepted' => 'Your ticket to :product',
             'rejected' => 'Full capacity of :product',
         ]
+    ],
+    'registration' => [
+        'type' => [
+            'attendee' => 'attendee',
+            'guest' => 'guest',
+            'speaker' => 'speaker',
+            'vip' => 'vip',
+            'press' => 'press',
+            'staff' => 'staff',
+        ]
     ]
 
 ];
