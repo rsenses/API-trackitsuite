@@ -30,10 +30,6 @@ class RegistrationController extends Controller
             ->orderBy('customer.last_name', 'ASC')
             ->get();
 
-        if (!$registrations) {
-            abort(404, __('messages.no_product'));
-        }
-
         return $registrations;
     }
 

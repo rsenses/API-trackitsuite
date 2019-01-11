@@ -60,10 +60,12 @@ class Customer extends Model
         $noCustomerMetaData = ['_token', 'email', 'first_name', 'last_name', 'product_id', 'registration_type_id', 'authorized', 'verification', 'infothird', 'infomail', 'age', 'legal'];
 
         foreach ($request->except($noCustomerMetaData) as $key => $value) {
-            $saveMetaData = $customer->metas()->create([
-                'meta_key' => $key,
-                'meta_value' => $value
-            ]);
+            if ($value) {
+                $saveMetaData = $customer->metas()->create([
+                    'meta_key' => $key,
+                    'meta_value' => $value
+                ]);
+            }
         }
 
         return $customer;
