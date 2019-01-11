@@ -86,7 +86,7 @@ class RegistrationController extends Controller
      */
     public function destroy($id)
     {
-        $registration = Registration::findOrFail($id);
+        $registration = Registration::where('unique_id', $id)->firstOrFail();
 
         try {
             $registration->transition('cancel');
