@@ -12,7 +12,8 @@ return [
 
     'not_found' => 'Inscription not found for this event',
     'verified' => 'Inscription verified recently',
-    'unauthorized' => 'No access to this room',
+    'authorized' => 'Authorization successful',
+    'unauthorized' => 'Unauthorized',
     'duplicated' => 'Duplicated registration, the email you are trying to use is already registered',
     'verification_error' => 'Error verifying inscription, try again, please',
     'access_granted' => 'Access granted',

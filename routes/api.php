@@ -16,18 +16,22 @@
 |
  */
 
-Route::namespace('Api')->prefix('v2')->middleware('auth:api')->group(function () {
-    Route::get('registrations', 'RegistrationController@index');
-    Route::post('registrations', 'RegistrationController@store');
-    Route::get('registrations/{id}', 'RegistrationController@show');
-    Route::delete('registrations/{id}', 'RegistrationController@destroy');
+Route::namespace('Api')->prefix('v2')->group(function () {
+    Route::post('login', 'LoginController@login');
 
-    Route::post('authorizations/{id}', 'AuthorizationController@update');
+    Route::middleware('auth:api')->group(function () {
+        Route::get('registrations', 'RegistrationController@index');
+        Route::post('registrations', 'RegistrationController@store');
+        Route::get('registrations/{id}', 'RegistrationController@show');
+        Route::delete('registrations/{id}', 'RegistrationController@destroy');
 
-    Route::post('verifications', 'VerificationController@store');
+        Route::post('authorizations/{id}', 'AuthorizationController@update');
 
-    Route::get('products', 'ProductController@index');
-    Route::post('products', 'ProductController@store');
+        Route::post('verifications', 'VerificationController@store');
 
-    Route::get('users/{id}', 'UserController@show');
+        Route::get('products', 'ProductController@index');
+        Route::post('products', 'ProductController@store');
+
+        Route::get('users/{id}', 'UserController@show');
+    });
 });
