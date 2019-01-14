@@ -13,6 +13,7 @@ return [
     'not_found' => 'Inscription not found for this event',
     'verified' => 'Inscription verified recently',
     'unauthorized' => 'No access to this room',
+    'duplicated' => 'Duplicated registration, the email you are trying to use is already registered',
     'verification_error' => 'Error verifying inscription, try again, please',
     'access_granted' => 'Access granted',
     'inscription_error' => 'Error creating inscription, try again, please',

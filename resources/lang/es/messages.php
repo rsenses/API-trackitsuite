@@ -13,6 +13,7 @@ return [
     'not_found' => 'Inscripción no válida para este evento',
     'verified' => 'Inscripción verificada recientemente',
     'unauthorized' => 'No tiene acceso a esta sala',
+    'duplicated' => 'Inscripción duplicada, el email usado ya está registrado en el evento',
     'verification_error' => 'Error verificando la inscripción, inténtalo de nuevo, por favor',
     'access_granted' => 'Acceso concedido',
     'inscription_error' => 'Error creando inscripción, inténtalo de nuevo, por favor',

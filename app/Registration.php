@@ -93,13 +93,11 @@ class Registration extends Model
      * @param  App\Customer $customer
      * @return App\Registration
      */
-    public static function createOrUpdate(Request $request, Product $product, Customer $customer)
+    public static function make(Request $request, Product $product, Customer $customer)
     {
         $user = $request->user();
 
         $roomId = $product->users()->find($user->user_id) ? $product->users()->find($user->user_id)->pivot->room_id : null;
-
-        // $registration->guardAgainstFullCapacity($request, $product, $roomId);
 
         $registration = Registration::firstOrNew(
             [
@@ -108,16 +106,16 @@ class Registration extends Model
             ]
         );
 
+        $registration->guardAgainstAlreadyRegister();
+
+        $last = $product->registrations()->latest()->first()->metadata['orden'] ?? 0;
+
+        $registration->unique_id = uniqid();
+        $registration->metadata = [
+            'orden' => $last + 1
+        ];
+
         $registration->registration_type_id = $request->registration_type_id;
-
-        if (!$registration->exists) {
-            $last = $product->registrations()->latest()->first()->metadata['orden'] ?? 0;
-
-            $registration->unique_id = uniqid();
-            $registration->metadata = [
-                'orden' => $last + 1
-            ];
-        }
 
         $registration->save();
         $registration->fresh();
@@ -244,6 +242,19 @@ class Registration extends Model
     {
         if ($verification->created_at < Carbon::now()->subSeconds(60)) {
             throw new VerifiedException(__('messages.verified'));
+        }
+    }
+
+    /**
+     * Check if the registration exists
+     *
+     * @param  App\Verification  $verification
+     * @return mixed
+     */
+    public function guardAgainstAlreadyRegister()
+    {
+        if ($this->exists) {
+            throw new VerifiedException(__('messages.duplicated'));
         }
     }
 

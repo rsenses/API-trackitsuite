@@ -56,7 +56,7 @@ class RegistrationController extends Controller
 
         $customer = Customer::createOrUpdate($request);
 
-        $registration = Registration::createOrUpdate($request, $product, $customer);
+        $registration = Registration::make($request, $product, $customer);
 
         try {
             $registration->transition('create');
