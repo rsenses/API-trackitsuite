@@ -64,6 +64,18 @@ class RegistrationController extends Controller
             Log::notice($th->getMessage());
         }
 
+        if ($request->authorized) {
+            $transition = 'approve';
+        } else {
+            $transition = 'reject';
+        }
+
+        try {
+            $registration->transition($transition);
+        } catch (\Throwable $th) {
+            Log::notice($th->getMessage());
+        }
+
         return $registration;
     }
 
