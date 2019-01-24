@@ -9,6 +9,7 @@ use App\Exceptions\UnauthorizedException;
 use App\Exceptions\FullCapacityException;
 use App\Exceptions\NotFoundException;
 use App\Exceptions\VerifiedException;
+use App\Exceptions\DuplicatedException;
 use App\Traits\Statable;
 use Illuminate\Support\Facades\Log;
 
@@ -254,7 +255,7 @@ class Registration extends Model
     public function guardAgainstAlreadyRegister()
     {
         if ($this->exists) {
-            throw new VerifiedException(__('messages.duplicated'));
+            throw new DuplicatedException(__('messages.duplicated'));
         }
     }
 

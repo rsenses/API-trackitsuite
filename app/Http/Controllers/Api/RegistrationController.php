@@ -8,6 +8,7 @@ use App\Registration;
 use App\Product;
 use App\Customer;
 use Illuminate\Support\Facades\Log;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class RegistrationController extends Controller
 {
@@ -56,7 +57,11 @@ class RegistrationController extends Controller
 
         $customer = Customer::createOrUpdate($request);
 
-        $registration = Registration::make($request, $product, $customer);
+        try {
+            $registration = Registration::make($request, $product, $customer);
+        } catch (\Throwable $th) {
+            throw new HttpException(401, $th->getMessage());
+        }
 
         try {
             $registration->transition('create');
