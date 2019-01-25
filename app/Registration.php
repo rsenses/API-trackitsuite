@@ -111,7 +111,7 @@ class Registration extends Model
 
         $last = $product->registrations()->latest()->first()->metadata['orden'] ?? 0;
 
-        $registration->unique_id = uniqid();
+        $registration->unique_id = !empty($request->unique_id) ? $request->unique_id : uniqid();
         $registration->metadata = [
             'orden' => $last + 1
         ];
