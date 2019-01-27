@@ -63,17 +63,17 @@ class RegistrationController extends Controller
             throw new HttpException(401, $th->getMessage());
         }
 
-        try {
-            if ($request->authorized) {
-                $transition = 'approve';
-            } else {
-                $transition = 'reject';
-            }
+        // try {
+        //     if ($request->authorized) {
+        //         $transition = 'approve';
+        //     } else {
+        //         $transition = 'reject';
+        //     }
 
-            $registration->transition($transition);
-        } catch (\Throwable $th) {
-            Log::notice($th->getMessage());
-        }
+        //     $registration->transition($transition);
+        // } catch (\Throwable $th) {
+        //     Log::notice($th->getMessage());
+        // }
 
         return $registration;
     }
