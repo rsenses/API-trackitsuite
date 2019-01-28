@@ -49,7 +49,7 @@ class RegistrationController extends Controller
             'nif' => 'nullable|max:255',
             'product_id' => 'required|exists:product,product_id',
             'registration_type_id' => 'required|exists:registration_type,registration_type_id',
-            'authorized' => 'nullable|boolean',
+            'authorization' => 'nullable|in:approve,reject',
             'verification' => 'required|boolean',
         ]);
 
@@ -63,19 +63,15 @@ class RegistrationController extends Controller
             throw new HttpException(401, $th->getMessage());
         }
 
-        // try {
-        //     if ($request->authorized) {
-        //         $transition = 'approve';
-        //     } else {
-        //         $transition = 'reject';
-        //     }
+        if ($request->authorization) {
+            try {
+                $registration->transition($request->authorization);
+            } catch (\Throwable $th) {
+                Log::notice($th->getMessage());
+            }
 
-        //     $registration->transition($transition);
-        // } catch (\Throwable $th) {
-        //     Log::notice($th->getMessage());
-        // }
-
-        return $registration;
+            return $registration;
+        }
     }
 
     /**
