@@ -23,7 +23,7 @@ return [
         // list of all possible transitions
         'transitions' => [
             'approve' => [
-                'from' => ['pending', 'rejected', 'cancelled'],
+                'from' => ['pending', 'rejected', 'cancelled', 'verified'],
                 'to' => 'accepted',
             ],
             'verify' => [
