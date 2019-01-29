@@ -19,7 +19,7 @@ class AuthorizationController extends Controller
     public function update(Request $request, $id)
     {
         $validatedData = $request->validate([
-            'transition' => 'required|in:approve,reject,cancel,create',
+            'transition' => 'required|in:approve,reject,cancel,create,verify',
         ]);
 
         $registration = Registration::findOrFail($id);
