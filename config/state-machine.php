@@ -13,6 +13,7 @@ return [
 
         // list of all possible states
         'states' => [
+            'new',
             'pending',
             'accepted',
             'verified',
@@ -22,8 +23,12 @@ return [
 
         // list of all possible transitions
         'transitions' => [
+            'create' => [
+                'from' => ['new'],
+                'to' => 'pending',
+            ],
             'approve' => [
-                'from' => ['pending', 'rejected', 'cancelled', 'verified'],
+                'from' => ['pending', 'rejected', 'cancelled', 'verified', 'new'],
                 'to' => 'accepted',
             ],
             'verify' => [
@@ -31,7 +36,7 @@ return [
                 'to' => 'verified',
             ],
             'reject' => [
-                'from' => ['pending'],
+                'from' => ['pending', 'new'],
                 'to' => 'rejected',
             ],
             'cancel' => [
