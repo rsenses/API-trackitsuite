@@ -71,6 +71,8 @@ class RegistrationController extends Controller
             }
 
             return $registration;
+        } else {
+            $registration->transition('create');
         }
     }
 
