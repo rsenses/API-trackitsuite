@@ -48,9 +48,9 @@ class RegistrationController extends Controller
             'email' => 'required|email',
             'nif' => 'nullable|max:255',
             'product_id' => 'required|exists:product,product_id',
-            'registration_type_id' => 'required|exists:registration_type,registration_type_id',
-            'authorization' => 'nullable|in:approve,reject',
-            'verification' => 'required|boolean',
+            'registration_type' => 'required|max:255',
+            'transition' => 'required|in:approve,reject,create,verify',
+            'unique_id' => 'nullable|unique:registration,unique_id'
         ]);
 
         $product = Product::findOrFail($request->product_id);
@@ -63,17 +63,13 @@ class RegistrationController extends Controller
             throw new HttpException(401, $th->getMessage());
         }
 
-        if ($request->authorization) {
-            try {
-                $registration->transition($request->authorization);
-            } catch (\Throwable $th) {
-                Log::notice($th->getMessage());
-            }
-
-            return $registration;
-        } else {
-            $registration->transition('create');
+        try {
+            $registration->transition($request->transition);
+        } catch (\Throwable $th) {
+            Log::notice($th->getMessage());
         }
+
+        return $registration;
     }
 
     /**

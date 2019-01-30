@@ -109,21 +109,18 @@ class Registration extends Model
 
         $registration->guardAgainstAlreadyRegister();
 
-        $last = $product->registrations()->latest()->first()->metadata['orden'] ?? 0;
-
         $registration->unique_id = !empty($request->unique_id) ? $request->unique_id : uniqid();
+
+        $last = $product->registrations()->latest()->first()->metadata['orden'] ?? 0;
         $registration->metadata = [
             'orden' => $last + 1
         ];
 
-        $registration->registration_type_id = $request->registration_type_id;
+        $registration->type = $request->registration_type;
 
         $registration->save();
-        $registration->fresh();
 
         $registration->saveRoomAccess($roomId);
-
-        $registration->verifyRegistration($request);
 
         return $registration->fresh();
     }

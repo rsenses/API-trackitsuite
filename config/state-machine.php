@@ -32,7 +32,7 @@ return [
                 'to' => 'accepted',
             ],
             'verify' => [
-                'from' => ['accepted'],
+                'from' => ['accepted', 'new'],
                 'to' => 'verified',
             ],
             'reject' => [
