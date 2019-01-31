@@ -57,7 +57,7 @@ class Customer extends Model
             ]
         );
 
-        $noCustomerMetaData = ['_token', 'email', 'first_name', 'last_name', 'product_id', 'registration_type_id', 'authorized', 'verification', 'infothird', 'infomail', 'age', 'legal'];
+        $noCustomerMetaData = ['_token', 'email', 'first_name', 'last_name', 'product_id', 'registration_type_id', 'authorized', 'verification', 'infothird', 'infomail', 'age', 'legal', 'unique_id'];
 
         foreach ($request->except($noCustomerMetaData) as $key => $value) {
             if ($value) {

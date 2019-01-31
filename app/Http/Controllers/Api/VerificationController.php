@@ -22,7 +22,11 @@ class VerificationController extends Controller
 
         $registration = Registration::getRegistrationByUniqueID($request);
 
-        $registration->verify($request);
+        try {
+            $registration->transition('verify');
+        } catch (\Throwable $th) {
+            Log::notice($th->getMessage());
+        }
 
         return $registration;
     }

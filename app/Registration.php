@@ -200,37 +200,6 @@ class Registration extends Model
     }
 
     /**
-     * Verify registration
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return mixed
-     */
-    public function verify(Request $request)
-    {
-        $verification = $this->verifications()->latest()->first();
-
-        if ($verification) {
-            $this->guardAgainstAlreadyVerifiedRegistration($verification);
-        } else {
-            // $this->guardAgainstNotAuthorizedAccess($request);
-
-            try {
-                $this->transition('verify');
-            } catch (\Throwable $th) {
-                Log::notice($th->getMessage());
-            }
-
-            $verification = Verification::create([
-                'registration_id' => $this->registration_id,
-                'user_id' => $request->user()->user_id,
-                'params' => $request->all()
-            ]);
-        }
-
-        return $verification;
-    }
-
-    /**
      * Check if the registration has benn verified recently, we gave it a 60 seconds margin in case of accidental double validation
      *
      * @param  App\Verification  $verification
