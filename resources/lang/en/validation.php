@@ -131,6 +131,9 @@ return [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
+        'unique_id' => [
+            'exists' => 'Incorrect registration.',
+        ],
         'transition' => [
             'in' => 'The selected :attribute is invalid, use reject, approve or cancel.',
         ]

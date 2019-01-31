@@ -15,6 +15,8 @@ return [
 
     'company' => 'No perteneces a la empresa especificada.',
 
+    'message' => 'Los datos especificados no son correctos.',
+
     'accepted' => 'El campo :attribute debe ser aceptado.',
     'active_url' => 'El campo :attribute no es una URL válida.',
     'after' => 'El campo :attribute debe ser una fecha posterior a :date.',
@@ -129,6 +131,9 @@ return [
     'custom' => [
         'attribute-name' => [
             'rule-name' => 'custom-message',
+        ],
+        'unique_id' => [
+            'exists' => 'Registro incorrecto.',
         ],
         'transition' => [
             'in' => 'El campo :attribute no es válido, usa reject, approve o cancel.'
