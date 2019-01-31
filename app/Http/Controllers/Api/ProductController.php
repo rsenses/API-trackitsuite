@@ -33,6 +33,34 @@ class ProductController extends Controller
     }
 
     /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        $product = Product::findOrFail($id);
+
+        $registrations = $product->registrations()
+            ->whereIn('state', ['accepted', 'verified'])
+            ->get();
+
+        $registrationsType = $registrations->groupBy('type');
+        $registrationsState = $registrations->groupBy('state');
+
+        $product = $product->toArray();
+        $product['registrations'] = [];
+
+        foreach ($registrationsType as $type => $typeRegistrations) {
+            $product['registrations'][$type]['total'] = $typeRegistrations->count();
+            $product['registrations'][$type]['verified'] = $typeRegistrations->where('state', 'verified')->count();
+        }
+
+        return $product;
+    }
+
+    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request

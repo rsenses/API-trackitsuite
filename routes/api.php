@@ -31,6 +31,7 @@ Route::namespace('Api')->prefix('v2')->group(function () {
         Route::post('verifications', 'VerificationController@store');
 
         Route::get('products', 'ProductController@index');
+        Route::get('products/{id}', 'ProductController@show');
         Route::post('products', 'ProductController@store');
 
         Route::get('users/{id}', 'UserController@show');
