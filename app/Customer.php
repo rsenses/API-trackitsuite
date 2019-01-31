@@ -61,14 +61,12 @@ class Customer extends Model
 
         foreach ($request->except($noCustomerMetaData) as $key => $value) {
             if ($value) {
-                $metada = $customer->metas()->where('meta_key', $key)->count();
-
-                if (!$metada) {
-                    $saveMetaData = $customer->metas()->create([
-                        'meta_key' => $key,
-                        'meta_value' => $value
-                    ]);
-                }
+                // If there's a flight from Oakland to San Diego, set the price to $99.
+                // If no matching model exists, create one.
+                CustomerMeta::updateOrCreate(
+                    ['customer_id' => $customer->customer_id, 'meta_key' => $key],
+                    ['meta_value' => $value]
+                );
             }
         }
 
