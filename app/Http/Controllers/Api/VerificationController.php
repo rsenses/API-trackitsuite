@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Registration;
+use Illuminate\Support\Facades\Log;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class VerificationController extends Controller
 {
@@ -21,6 +23,12 @@ class VerificationController extends Controller
         ]);
 
         $registration = Registration::getRegistrationByUniqueID($request);
+
+        try {
+            $registration->guardAgainstAlreadyVerifiedRegistration();
+        } catch (\Throwable $th) {
+            throw new HttpException(401, $th->getMessage(), $th, ['Error-Level' => 'warning']);
+        }
 
         try {
             $registration->transition('verify');

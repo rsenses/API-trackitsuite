@@ -4,14 +4,12 @@ namespace App;
 
 use Illuminate\Http\Request;
 use Illuminate\Database\Eloquent\Model;
-use Carbon\Carbon;
 use App\Exceptions\UnauthorizedException;
 use App\Exceptions\FullCapacityException;
 use App\Exceptions\NotFoundException;
-use App\Exceptions\VerifiedException;
 use App\Exceptions\DuplicatedException;
+use App\Exceptions\AlreadyVerifiedException;
 use App\Traits\Statable;
-use Illuminate\Support\Facades\Log;
 
 class Registration extends Model
 {
@@ -173,42 +171,14 @@ class Registration extends Model
     }
 
     /**
-     * Vaerify the registration if necesary
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return mixed
-     */
-    public function verifyRegistration(Request $request)
-    {
-        if ($request->verification) {
-            try {
-                $this->transition('verify');
-            } catch (\Throwable $th) {
-                Log::notice($th->getMessage());
-            }
-
-            $verification = Verification::create([
-                'registration_id' => $this->registration_id,
-                'user_id' => $request->user()->user_id,
-                'params' => ['method' => 'create']
-            ]);
-
-            return $verification;
-        }
-
-        return false;
-    }
-
-    /**
      * Check if the registration has benn verified recently, we gave it a 60 seconds margin in case of accidental double validation
      *
-     * @param  App\Verification  $verification
      * @return mixed
      */
-    public function guardAgainstAlreadyVerifiedRegistration(Verification $verification)
+    public function guardAgainstAlreadyVerifiedRegistration()
     {
-        if ($verification->created_at < Carbon::now()->subSeconds(60)) {
-            throw new VerifiedException(__('messages.verified'));
+        if ($this->state == 'verified') {
+            throw new AlreadyVerifiedException(__('messages.verified'));
         }
     }
 

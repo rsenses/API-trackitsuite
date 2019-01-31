@@ -60,7 +60,7 @@ class RegistrationController extends Controller
         try {
             $registration = Registration::make($request, $product, $customer);
         } catch (\Throwable $th) {
-            throw new HttpException(401, $th->getMessage());
+            throw new HttpException(401, $th->getMessage(), $th, ['Error-Level' => 'warning']);
         }
 
         try {
