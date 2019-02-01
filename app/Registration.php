@@ -60,27 +60,17 @@ class Registration extends Model
             ->withPivot('permission');
     }
 
-    public function type()
-    {
-        return $this->belongsTo('App\RegistrationType', 'registration_type_id');
-    }
-
-    public function verifications()
-    {
-        return $this->hasMany('App\Verification', 'registration_id');
-    }
-
     /**
      * Scope a query to filter for registration_type if exist
      *
      * @param \Illuminate\Database\Eloquent\Builder $query
-     * @param $id
+     * @param $type
      * @return \Illuminate\Database\Eloquent\Builder
      */
-    public function scopeRegistrationType($query, $id)
+    public function scopeType($query, $type)
     {
-        if ($id) {
-            return $query->where('registration_type_id', $id);
+        if ($type) {
+            return $query->where('type', $type);
         }
     }
 

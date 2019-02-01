@@ -27,7 +27,7 @@ class RegistrationController extends Controller
             ->with('customer', 'customer.metas')
             ->join('customer', 'registration.customer_id', '=', 'customer.customer_id')
             ->whereIn('registration.state', ['accepted', 'verified', 'rejected', 'cancelled'])
-            ->registrationType($request->registration_type_id)
+            ->type($request->type)
             ->orderBy('customer.last_name', 'ASC')
             ->get();
 
