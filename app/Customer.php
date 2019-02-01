@@ -61,8 +61,8 @@ class Customer extends Model
 
         foreach ($request->except($noCustomerMetaData) as $key => $value) {
             if ($value) {
-                CustomerMeta::updateOrCreate(
-                    ['customer_id' => $customer->customer_id, 'meta_key' => $key],
+                $customer->metas()->updateOrCreate(
+                    ['meta_key' => $key],
                     ['meta_value' => $value]
                 );
             }
