@@ -122,7 +122,7 @@ class Registration extends Model
     public static function getRegistrationByUniqueID(Request $request)
     {
         try {
-            $registration = Registration::with(['customer', 'type'])
+            $registration = Registration::with(['customer'])
                 ->where(function ($q) {
                     $q->where('state', 'accepted');
                     $q->orWhere('state', 'verified');
