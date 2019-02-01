@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Registration;
 use Illuminate\Support\Facades\Log;
-use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class VerificationController extends Controller
 {
@@ -27,7 +26,7 @@ class VerificationController extends Controller
         try {
             $registration->guardAgainstAlreadyVerifiedRegistration();
         } catch (\Throwable $th) {
-            throw new HttpException(401, $th->getMessage(), $th, ['Error-Level' => 'warning']);
+            abort(403, $th->getMessage());
         }
 
         try {

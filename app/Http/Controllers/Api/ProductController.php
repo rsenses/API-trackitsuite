@@ -29,6 +29,10 @@ class ProductController extends Controller
             ->orderBy('date_start')
             ->get();
 
+        if (!$products->count()) {
+            abort(404, __('messages.no_product'));
+        }
+
         return $products;
     }
 
