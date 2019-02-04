@@ -104,7 +104,7 @@ class Registration extends Model
             'orden' => $last + 1
         ];
 
-        $registration->type = $request->registration_type;
+        $registration->type = strtolower($request->registration_type);
 
         $registration->save();
 
