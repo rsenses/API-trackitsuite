@@ -27,12 +27,21 @@ class SendRegistrationUpdatedRequest
      */
     public function handle(TransitionEvent $event)
     {
+        $transition = $event->getTransition();
         $registration = $event->getStateMachine()->getObject();
+        $api = $registration->product->company->api;
 
         $params = [
+            'first_name' => $registration->customer->first_name,
+            'last_name' => $registration->customer->last_name,
+            'email' => $registration->customer->email,
+            'product_id' => $registration->product_id,
+            'registration_type' => $registration->type,
             'unique_id' => $registration->unique_id,
         ];
 
-        // $this->sendPostRequest('https://smart.conferenciasyformacion.com/trackit/', 'attended', $params);
+        if ($transition && $api) {
+            $this->sendPostRequest($api, $transition, $params);
+        }
     }
 }

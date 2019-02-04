@@ -20,7 +20,8 @@ trait GuzzleRequest
     protected function sendPostRequest($baseUri, $path, array $params)
     {
         $client = new Client([
-            'base_uri' => $baseUri
+            'base_uri' => $baseUri,
+            'verify' => !env('APP_DEBUG', false)
         ]);
 
         try {

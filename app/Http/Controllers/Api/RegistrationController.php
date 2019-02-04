@@ -63,9 +63,17 @@ class RegistrationController extends Controller
         }
 
         try {
-            $registration->transition($request->transition);
+            $registration->transition('create');
         } catch (\Throwable $th) {
             Log::notice($th->getMessage());
+        }
+
+        if ($request->transition != 'create') {
+            try {
+                $registration->transition($request->transition);
+            } catch (\Throwable $th) {
+                Log::notice($th->getMessage());
+            }
         }
 
         return $registration;
