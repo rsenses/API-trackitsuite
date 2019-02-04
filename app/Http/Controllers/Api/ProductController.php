@@ -104,4 +104,46 @@ class ProductController extends Controller
 
         return Product::with('place')->findOrFail($product->product_id);
     }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        $validatedData = $request->validate([
+            'name' => 'required|max:255',
+            'image_url' => 'required|url',
+            'date_start' => 'required|date|after:today',
+            'date_end' => 'required|date|after:date_start',
+            'capacity' => 'required|integer',
+            'company_id' => 'required|exists:company,company_id|company',
+            'place_name' => 'nullable|max:255',
+            'place_address' => 'required_with:place_name',
+            'place_city' => 'required_with:place_name',
+            'place_zip' => 'required_with:place_name',
+            'state_id' => 'required_with:place_name|exists:state,state_id',
+        ]);
+
+        $place = Place::createOrUpdate($request);
+
+        $product = Product::findOrFail($id);
+
+        $product->name = $request->name;
+        $product->slug = str_slug($request->name);
+        $product->image = $request->image_url;
+        $product->description = $request->description;
+        $product->date_start = $request->date_start;
+        $product->date_end = $request->date_end;
+        $product->capacity = $request->capacity;
+        $product->place_id = $place ? $place->place_id : null;
+        $product->company_id = $request->company_id;
+
+        $product->save();
+
+        return Product::with('place')->findOrFail($product->product_id);
+    }
 }

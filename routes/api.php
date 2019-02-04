@@ -22,8 +22,8 @@ Route::namespace('Api')->prefix('v2')->group(function () {
     Route::middleware('auth:api')->group(function () {
         Route::get('registrations', 'RegistrationController@index');
         Route::post('registrations', 'RegistrationController@store');
-        Route::get('registrations/{id}', 'RegistrationController@show');
-        Route::delete('registrations/{id}', 'RegistrationController@destroy');
+        Route::get('registrations/{id}', 'RegistrationController@show')->where('id', '[0-9]+');
+        Route::delete('registrations/{id}', 'RegistrationController@destroy')->where('id', '[0-9]+');
 
         Route::post('authorizations/customer/{id}', 'AuthorizationCustomerController@update');
         Route::post('authorizations/{id}', 'AuthorizationController@update');
@@ -31,9 +31,10 @@ Route::namespace('Api')->prefix('v2')->group(function () {
         Route::post('verifications', 'VerificationController@store');
 
         Route::get('products', 'ProductController@index');
-        Route::get('products/{id}', 'ProductController@show');
+        Route::get('products/{id}', 'ProductController@show')->where('id', '[0-9]+');
+        Route::match(['put', 'patch'], 'products/{id}', 'ProductController@update')->where('id', '[0-9]+');
         Route::post('products', 'ProductController@store');
 
-        Route::get('users/{id}', 'UserController@show');
+        Route::get('users/{id}', 'UserController@show')->where('id', '[0-9]+');
     });
 });
