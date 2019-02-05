@@ -21,7 +21,11 @@ class VerificationController extends Controller
             'unique_id' => 'required|exists:registration,unique_id',
         ]);
 
-        $registration = Registration::getRegistrationByUniqueID($request);
+        try {
+            $registration = Registration::getRegistrationByUniqueID($request);
+        } catch (\Throwable $th) {
+            abort(403, $th->getMessage());
+        }
 
         try {
             $registration->guardAgainstAlreadyVerifiedRegistration();
