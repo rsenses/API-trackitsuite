@@ -123,10 +123,7 @@ class Registration extends Model
     {
         try {
             $registration = Registration::with(['customer'])
-                ->where(function ($q) {
-                    $q->where('state', 'accepted');
-                    $q->orWhere('state', 'verified');
-                })
+                ->whereIn('state', ['accepted', 'verified'])
                 ->where('unique_id', $request->unique_id)
                 ->whereHas('product.users', function ($query) use ($request) {
                     $query->where('user.user_id', $request->user()->user_id);

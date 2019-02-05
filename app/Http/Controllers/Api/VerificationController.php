@@ -23,11 +23,7 @@ class VerificationController extends Controller
 
         try {
             $registration = Registration::getRegistrationByUniqueID($request);
-        } catch (\Throwable $th) {
-            abort(403, $th->getMessage());
-        }
 
-        try {
             $registration->guardAgainstAlreadyVerifiedRegistration();
         } catch (\Throwable $th) {
             abort(403, $th->getMessage());
