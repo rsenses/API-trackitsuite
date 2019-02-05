@@ -29,8 +29,6 @@ class LoginController extends Controller
             $auth = Hash::check($request->get('password'), $user->password);
 
             if ($user && $auth) {
-                $user->rollApiKey(); //Model Function
-
                 $this->authenticated($request, $user);
 
                 return response([
