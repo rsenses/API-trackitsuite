@@ -172,7 +172,6 @@ class Registration extends Model
     /**
      * Check if the registration exists
      *
-     * @param  App\Verification  $verification
      * @return mixed
      */
     public function guardAgainstAlreadyRegister()

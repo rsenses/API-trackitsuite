@@ -53,9 +53,4 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Log');
     }
-
-    public function verifications()
-    {
-        return $this->hasMany('App\Verification');
-    }
 }
