@@ -23,6 +23,7 @@ trait AllowedTemplateData
             'registration_qr' => "https://trackitsuite.com/es/registration/qr/{$registration->unique_id}",
             'registration_metadata' => $registration->metadata,
             'registration_type' => $registration->type,
+            'customer_id' => $registration->customer->id,
             'customer_first_name' => $registration->customer->first_name,
             'customer_last_name' => $registration->customer->last_name,
             'customer_email' => $registration->customer->email,

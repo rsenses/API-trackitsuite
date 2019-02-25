@@ -23,7 +23,7 @@ Route::namespace('Api')->prefix('v2')->group(function () {
         Route::get('registrations', 'RegistrationController@index');
         Route::post('registrations', 'RegistrationController@store');
         Route::get('registrations/{id}', 'RegistrationController@show')->where('id', '[0-9]+');
-        Route::delete('registrations/{id}', 'RegistrationController@destroy')->where('id', '[0-9]+');
+        Route::delete('registrations/{id}', 'RegistrationController@destroy');
 
         Route::post('authorizations/customer/{id}', 'AuthorizationCustomerController@update');
         Route::post('authorizations/{id}', 'AuthorizationController@update');
