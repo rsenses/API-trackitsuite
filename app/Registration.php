@@ -95,7 +95,9 @@ class Registration extends Model
             ]
         );
 
-        $registration->guardAgainstAlreadyRegister();
+        if ($registration->state != 'cancelled') {
+            $registration->guardAgainstAlreadyRegister();
+        }
 
         $registration->unique_id = !empty($request->unique_id) ? $request->unique_id : uniqid();
 
@@ -107,6 +109,10 @@ class Registration extends Model
         $registration->type = strtolower($request->registration_type);
 
         $registration->save();
+
+        if ($registration->state == 'cancelled') {
+            $registration->transition('approve');
+        }
 
         $registration->saveRoomAccess($roomId);
 
