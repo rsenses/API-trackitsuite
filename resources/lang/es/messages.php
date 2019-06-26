@@ -27,7 +27,7 @@ return [
     'subject' => [
         'registrations' => [
             'pending' => 'Inscripción a :product',
-            'accepted' => 'Tu entrada a :product',
+            'accepted' => 'Entrada a :product',
             'cancelled' => 'Lamentamos su ausencia',
             'rejected' => 'Aforo completo en :product',
         ]
