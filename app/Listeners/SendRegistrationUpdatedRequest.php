@@ -40,7 +40,7 @@ class SendRegistrationUpdatedRequest
             'unique_id' => $registration->unique_id,
         ];
 
-        if ($transition && $api) {
+        if ($transition && $api && $registration->product->send_to_api) {
             $this->sendPostRequest($api, $transition, $params);
         }
     }
