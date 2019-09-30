@@ -148,9 +148,7 @@ class Registration extends Model
         if ($roomId) {
             $room = Room::find($roomId);
 
-            $this->rooms()->save($room, [
-                'permission' => 1
-            ]);
+            $this->rooms()->save($room);
 
             return $room;
         }
@@ -163,9 +161,13 @@ class Registration extends Model
      *
      * @return mixed
      */
-    public function guardAgainstAlreadyVerifiedRegistration()
+    public function guardAgainstAlreadyVerifiedRegistration(Request $request)
     {
-        if ($this->state == 'verified') {
+        $user = $request->user();
+
+        $roomId = $this->product->users()->find($user->user_id) ? $this->product->users()->find($user->user_id)->pivot->room_id : null;
+
+        if (!$roomId && $this->state == 'verified') {
             throw new AlreadyVerifiedException(__('messages.verified'));
         }
     }
@@ -192,9 +194,9 @@ class Registration extends Model
     {
         $user = $request->user();
 
-        $roomId = $product->users()->find($user->user_id) ? $product->users()->find($user->user_id)->pivot->room_id : null;
+        $roomId = $this->product->users()->find($user->user_id) ? $this->product->users()->find($user->user_id)->pivot->room_id : null;
 
-        if ($roomId && $registration->rooms()->count() && $registration->rooms()->find($roomId)->pivot->permission === 0) {
+        if ($roomId && (!$this->rooms()->count() || ($this->rooms()->count() && $this->rooms()->find($roomId)))) {
             throw new UnauthorizedException(__('messages.unauthorized'));
         }
     }

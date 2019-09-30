@@ -17,14 +17,20 @@ class VerificationController extends Controller
      */
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
+        $request->validate([
             'unique_id' => 'required|exists:registration,unique_id',
         ]);
 
-        try {
-            $registration = Registration::getRegistrationByUniqueID($request);
+        $registration = Registration::getRegistrationByUniqueID($request);
 
-            $registration->guardAgainstAlreadyVerifiedRegistration();
+        try {
+            $registration->guardAgainstAlreadyVerifiedRegistration($request);
+        } catch (\Throwable $th) {
+            abort(403, $th->getMessage());
+        }
+
+        try {
+            $registration->guardAgainstNotAuthorizedAccess($request);
         } catch (\Throwable $th) {
             abort(403, $th->getMessage());
         }
