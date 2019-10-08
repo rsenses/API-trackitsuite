@@ -159,6 +159,27 @@ class Registration extends Model
     }
 
     /**
+     * Check if registration is from SMART
+     *
+     * @param  $roomId
+     * @return mixed
+     */
+    public function isSmart()
+    {
+        if ($this->request) {
+            $request = unserialize($this->request);
+
+            if (!empty($request['referer'])) {
+                if (in_array('https://smart.conferenciasyformacion.com/', $request['referer'])) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Check if the registration has benn verified recently, we gave it a 60 seconds margin in case of accidental double validation
      *
      * @return mixed

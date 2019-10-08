@@ -29,7 +29,7 @@ class SendRegistrationUpdatedNotification
         $state = $event->getStateMachine()->getState();
         $registration = $event->getStateMachine()->getObject();
 
-        if ($registration->product->templates()->where('state', $state)->exists()) {
+        if ($registration->product->templates()->where('state', $state)->exists() && !$registration->isSmart()) {
             Mail::to($registration->customer->email)->queue(new RegistrationUpdated($registration));
         }
     }
