@@ -103,6 +103,8 @@ class Registration extends Model
 
         $registration->type = strtolower($request->registration_type);
 
+        $registration->request = serialize($request->headers->all());
+
         $registration->save();
 
         if ($registration->state == 'cancelled') {
