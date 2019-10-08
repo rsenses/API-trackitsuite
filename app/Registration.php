@@ -104,8 +104,6 @@ class Registration extends Model
         $registration->type = strtolower($request->registration_type);
 
         $registration->request = serialize([
-            $_SERVER['HTTP_REFERER'],
-            $request->header('referer'),
             $request->headers->all()
         ]);
 
