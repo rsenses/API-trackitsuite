@@ -105,13 +105,17 @@ class Registration extends Model
 
         $registration->request = serialize($request->headers->all());
 
+        if ($request->metadata) {
+            $registration->metadata = $request->metadata;
+        }
+
         $registration->save();
 
         if ($registration->state == 'cancelled') {
             $registration->transition('approve');
         }
 
-        $registration->saveRoomAccess($roomId);
+        $registration->saveRoomAccess($request, $roomId);
 
         return $registration->fresh();
     }
@@ -145,14 +149,20 @@ class Registration extends Model
      * @param  $roomId
      * @return mixed
      */
-    public function saveRoomAccess($roomId)
+    public function saveRoomAccess(Request $request, $roomId = null)
     {
-        if ($roomId) {
-            $room = Room::find($roomId);
+        if ($this->product->rooms()->get()) {
+            if ($roomId) {
+                $room = Room::find($roomId);
 
-            $this->rooms()->save($room);
+                $this->rooms()->save($room);
 
-            return $room;
+                return true;
+            } else {
+                if (!empty($request->rooms)) {
+                    $this->rooms()->attach($request->rooms);
+                }
+            }
         }
 
         return false;
@@ -219,8 +229,10 @@ class Registration extends Model
 
         $roomId = $this->product->users()->find($user->user_id) ? $this->product->users()->find($user->user_id)->pivot->room_id : null;
 
-        if ($roomId && (!$this->rooms()->count() || ($this->rooms()->count() && $this->rooms()->find($roomId)))) {
-            throw new UnauthorizedException(__('messages.unauthorized'));
+        if ($roomId) {
+            if (!$this->rooms()->count() || ($this->rooms()->count() && !$this->rooms()->find($roomId))) {
+                throw new UnauthorizedException(__('messages.unauthorized'));
+            }
         }
     }
 

@@ -49,7 +49,9 @@ class RegistrationController extends Controller
             'product_id' => 'required|exists:product,product_id',
             'registration_type' => 'required|max:255',
             'transition' => 'required|in:approve,reject,create,verify',
-            'unique_id' => 'nullable|unique:registration,unique_id'
+            'unique_id' => 'nullable|unique:registration,unique_id',
+            'metadata' => 'nullable|array',
+            'rooms' => 'nullable|array',
         ]);
 
         $product = Product::findOrFail($request->product_id);

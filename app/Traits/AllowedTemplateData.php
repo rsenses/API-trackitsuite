@@ -39,6 +39,7 @@ trait AllowedTemplateData
             'place_city' => $registration->product->place ? $registration->product->place->city : null,
             'place_zip' => $registration->product->place ? $registration->product->place->zip : null,
             'place_state' => $registration->product->place ? $registration->product->place->state->name : null,
+            'webview' => "https://trackitsuite.com/es/registration/webview/{$registration->unique_id}?state={$registration->state}",
         ];
     }
 }
