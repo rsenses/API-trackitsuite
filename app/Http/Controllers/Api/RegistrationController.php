@@ -23,7 +23,7 @@ class RegistrationController extends Controller
 
         $registrations = $product->registrations()
             ->select('registration.*')
-            ->with('customer', 'customer.metas')
+            ->with('customer', 'customer.metas', 'rooms')
             ->join('customer', 'registration.customer_id', '=', 'customer.customer_id')
             ->whereIn('registration.state', ['accepted', 'verified', 'rejected', 'cancelled'])
             ->type($request->type)
