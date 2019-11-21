@@ -19,6 +19,7 @@ trait AllowedTemplateData
         $customerPosition = $registration->customer->metas->where('meta_key', 'position')->first();
 
         return [
+            'registration_id' => $registration->registration_id,
             'registration_unique_id' => $registration->unique_id,
             'registration_qr' => "https://trackitsuite.com/es/registration/qr/{$registration->unique_id}",
             'registration_metadata' => $registration->metadata,
