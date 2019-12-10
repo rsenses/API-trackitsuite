@@ -45,7 +45,9 @@ class RegistrationUpdated extends Mailable implements ShouldQueue
         $fromEmail = $this->registration->product->company->from_email ?: Config::get('mail.from.address');
         $fromName = $this->registration->product->company->from_name ?: Config::get('mail.from.name');
 
-        return $this->subject(__('messages.subject.registrations.' . $this->registration->state, ['product' => $this->registration->product->name]))
+        $subject = $this->template->subject ?: __('messages.subject.registrations.' . $this->registration->state, ['product' => $this->registration->product->name]);
+
+        return $this->subject($subject)
             ->from($fromEmail, $fromName)
             ->view('emails.registrations.template');
     }
