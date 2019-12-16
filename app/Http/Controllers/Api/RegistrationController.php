@@ -41,6 +41,8 @@ class RegistrationController extends Controller
      */
     public function store(Request $request)
     {
+        Log::debug($request->product_id);
+
         $request->validate([
             'first_name' => 'required|max:255',
             'last_name' => 'required|max:255',

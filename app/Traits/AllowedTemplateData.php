@@ -3,6 +3,7 @@
 namespace App\Traits;
 
 use App\Registration;
+use Illuminate\Support\Facades\Config;
 
 trait AllowedTemplateData
 {
@@ -28,7 +29,7 @@ trait AllowedTemplateData
             'customer_first_name' => $registration->customer->first_name,
             'customer_last_name' => $registration->customer->last_name,
             'customer_email' => $registration->customer->email,
-            'customer_security' => openssl_encrypt($registration->customer->email, 'AES-128-ECB', 'SrEWpZWtmphDACSb'),
+            'customer_security' => urlencode(openssl_encrypt($registration->customer->email, 'AES-256-ECB', Config::get('app.key'))),
             'customer_company' => $customerCompany ? $customerCompany['meta_value'] : null,
             'customer_position' => $customerPosition ? $customerPosition['meta_value'] : null,
             'product_name' => $registration->product->name,
