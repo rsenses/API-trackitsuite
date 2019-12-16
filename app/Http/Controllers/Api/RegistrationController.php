@@ -41,14 +41,12 @@ class RegistrationController extends Controller
      */
     public function store(Request $request)
     {
-        Log::debug($request->product_id);
-
         $request->validate([
             'first_name' => 'required|max:255',
             'last_name' => 'required|max:255',
             'email' => 'required|email',
             'nif' => 'nullable|max:255',
-            // 'product_id' => 'required|exists:product,product_id',
+            'product_id' => 'required|exists:product,product_id',
             'registration_type' => 'required|max:255',
             'transition' => 'required|in:approve,reject,create,verify',
             'unique_id' => 'nullable|unique:registration,unique_id',
