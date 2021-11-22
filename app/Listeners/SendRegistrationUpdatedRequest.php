@@ -35,6 +35,8 @@ class SendRegistrationUpdatedRequest
             'first_name' => $registration->customer->first_name,
             'last_name' => $registration->customer->last_name,
             'email' => $registration->customer->email,
+            'company' => $registration->customer->metas->where('meta_key', 'company')->first()->meta_value,
+            'position' => $registration->customer->metas->where('meta_key', 'position')->first()->meta_value,
             'product_id' => $registration->product_id,
             'registration_type' => $registration->type,
             'unique_id' => $registration->unique_id,
