@@ -19,13 +19,8 @@ class ProductController extends Controller
     public function index(Request $request)
     {
         $products = Product::with('rooms')
-            ->whereHas('users', function ($query) use ($request) {
-                $now = Carbon::now();
-
-                $query->where('product_user.date_start', '<', $now)
-                    ->where('product_user.date_end', '>', $now)
-                    ->where('product_user.user_id', $request->user()->user_id);
-            })
+            ->has('registrations', '>', 2)
+            ->where('date_end', '>=', Carbon::now())
             ->orderBy('date_start')
             ->get();
 
