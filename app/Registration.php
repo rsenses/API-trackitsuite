@@ -132,9 +132,6 @@ class Registration extends Model
             $registration = Registration::with(['customer'])
                 ->whereIn('state', ['accepted', 'verified'])
                 ->where('unique_id', $request->unique_id)
-                ->whereHas('product.users', function ($query) use ($request) {
-                    $query->where('user.user_id', $request->user()->user_id);
-                })
                 ->firstOrFail();
 
             return $registration;
