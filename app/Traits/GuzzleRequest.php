@@ -2,8 +2,8 @@
 
 namespace App\Traits;
 
-use GuzzleHttp\Client;
 use Exception;
+use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
 use Illuminate\Support\Facades\Log;
 
@@ -12,21 +12,27 @@ trait GuzzleRequest
     /**
      * Send POST request to external source
      *
-     * @param  $baseUri
-     * @param  $path
-     * @param  array $params
      * @return mixed
      */
     protected function sendPostRequest($baseUri, $path, array $params)
     {
-        $client = new Client([
-            'base_uri' => $baseUri,
-            'verify' => !env('APP_DEBUG', false)
-        ]);
+        // Check if the base URI contains smart word
+        if (strpos($baseUri, 'smart') === false) {
+            $client = new Client([
+                'auth' => ['smart', 'eventosue'],
+                'base_uri' => $baseUri,
+                'verify' => ! env('APP_DEBUG', false),
+            ]);
+        } else {
+            $client = new Client([
+                'base_uri' => $baseUri,
+                'verify' => ! env('APP_DEBUG', false),
+            ]);
+        }
 
         try {
             $response = $client->post($path, [
-                'form_params' => $params
+                'form_params' => $params,
             ]);
 
             return true;
