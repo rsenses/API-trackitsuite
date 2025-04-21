@@ -19,12 +19,12 @@ trait GuzzleRequest
         // Check if the base URI contains smart word
         if (strpos($baseUri, 'smart') === false) {
             $client = new Client([
-                'auth' => ['smart', 'eventosue'],
                 'base_uri' => $baseUri,
                 'verify' => ! env('APP_DEBUG', false),
             ]);
         } else {
             $client = new Client([
+                'auth' => ['smart', 'eventosue'],
                 'base_uri' => $baseUri,
                 'verify' => ! env('APP_DEBUG', false),
             ]);
